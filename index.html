@@ -1,32 +1,113 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>El safa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo&family=Tajawal&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <title>لعبة بيبو</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px 0 0 0; /* أضفنا padding-top هنا */
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .emoji-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+      max-width: 400px;
+    }
+
+    .emoji {
+      font-size: 2.5rem;
+      margin: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .emoji.clicked {
+      opacity: 0.4;
+      pointer-events: none;
+      transform: scale(1.3) rotate(10deg);
+    }
+
+    .message {
+      font-size: 2rem;
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #fff8e1;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      display: none;
+      text-align: center;
+      word-break: break-word;
+    }
+
+    @media (max-width: 500px) {
+      .emoji {
+        font-size: 2rem;
+        margin: 8px;
+      }
+
+      .message {
+        font-size: 1.5rem;
+        padding: 8px 16px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="overlay">
-    <div class="logo-container">
-      <img src="logo.png" alt="Logo" class="logo">
-    </div>
-    <div class="button-grid">
-      <a href="https://www.el-safa-sa.com"  target="_blank" class="btn dark">
-        <i class="fas fa-globe"></i> زيارة موقعنا
-      </a>
-      <a href="https://wa.me/201154177789"  target="_blank" class="btn dark">
-        <i class="fab fa-whatsapp"></i> تواصل معنا على واتساب
-      </a>
-      <a href="https://x.com/co_elsafa" target="_blank"  class="btn dark">
-        <i class="fab fa-twitter"></i> تابعنا على تويتر
-      </a>
-      <a href="https://www.facebook.com/profile.php?id=61576652446450" target="_blank"  class="btn dark">
-        <i class="fab fa-facebook"></i> تابعنا على فيسبوك
-      </a>
-    </div>
-  </div>
+
+  <h2>اختاري كل الإيموجي اللي قدامك دي بالترتيب، يعني اللي بتحبيه أكتر في الأول 😉</h2>
+
+  <div class="emoji-container" id="emojiContainer"></div>
+  <div class="message" id="message"></div>
+
+  <script>
+    const emojis = ["😂", "❤️", "😇", "😭", "😔", "😒", "😎", "😉", "🥰", "😍"];
+    const clickedEmojis = [];
+    const emojiContainer = document.getElementById('emojiContainer');
+    const messageDiv = document.getElementById('message');
+    const baseMessage = "صباح الخير يا بيبو";
+
+    const shuffledEmojis = emojis.sort(() => 0.5 - Math.random());
+
+    shuffledEmojis.forEach(emoji => {
+      const span = document.createElement("span");
+      span.classList.add("emoji");
+      span.textContent = emoji;
+      span.addEventListener("click", () => {
+        if (!span.classList.contains("clicked")) {
+          span.classList.add("clicked");
+          clickedEmojis.push(emoji);
+          if (clickedEmojis.length === emojis.length) {
+            showMessage();
+          }
+        }
+      });
+      emojiContainer.appendChild(span);
+    });
+
+    function showMessage() {
+      let result = "";
+      for (let i = 0; i < baseMessage.length; i++) {
+        result += baseMessage[i];
+        if (clickedEmojis[i]) {
+          result += clickedEmojis[i];
+        }
+      }
+      messageDiv.textContent = result;
+      messageDiv.style.display = 'block';
+    }
+  </script>
+
 </body>
 </html>
